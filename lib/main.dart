@@ -39,15 +39,20 @@ class MoviesListing extends StatefulWidget {
 }
 
 class _MoviesListingState extends State<MoviesListing> {
+  //List of movies to hold data parsed from api response
   List<MovieModel>? movies = <MovieModel>[];
 
   fetchMovies() async {
+    // Fetching data from server
     var data = await MoviesProvider.getJson();
 
     setState(() {
+      //Holding data from server in generic list results
       List<dynamic> results = data['results'];
       // results.forEach((element) - Avoid using `forEach` with a function literal.
+      //Iterating over results list and converting to MovieModel
       for (var element in results) {
+        //adding MovieModel object to movies list
         movies?.add(MovieModel.fromJson(element));
       }
     });
@@ -72,7 +77,7 @@ class _MoviesListingState extends State<MoviesListing> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
 
-            //NEW CODE: New way to display title
+            //New way to display title
             //Title is being accessed as below rather than using`movies[index]["title"]`
             child: Text(movies![index].title),
           );
