@@ -54,8 +54,16 @@ class _MoviesListingState extends State<MoviesListing> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    //This method is called once when the widget starts first time
     fetchMovies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //Note- Call fetchMovies once from initState()
+    //fetchMovies();
 
     return Scaffold(
       body: ListView.builder(
