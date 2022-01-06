@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-//Displaying API response in ListView
 void main() => runApp(const MoviesApp());
 
-//App level widget
 class MoviesApp extends StatelessWidget {
   const MoviesApp({Key? key}) : super(key: key);
 
@@ -14,21 +12,17 @@ class MoviesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      //movie listing stateful widget
       home: MoviesListing(),
     );
   }
 }
 
-// A class for anything related to movies
 class MoviesProvider {
   static const String imagePathPrefix = 'https://image.tmdb.org/t/p/w500/';
 
-  //REPLACE: Don't forget to replace with your own API key
+  //Replace YOUR_API_KEY with your API key
   static const apiKey = "8eaf8205d69cf7f36ddd79ceba2ff248";
 
-  //Returns JSON formatted response as Map
   static Future<Map> getJson() async {
     const apiEndPoint =
         "http://api.themoviedb.org/3/discover/movie?api_key=$apiKey&sort_by=popularity.desc";
@@ -37,7 +31,6 @@ class MoviesProvider {
   }
 }
 
-// This class has to be stateful, because the content changes as movies are fetched.
 class MoviesListing extends StatefulWidget {
   const MoviesListing({Key? key}) : super(key: key);
 
@@ -46,42 +39,71 @@ class MoviesListing extends StatefulWidget {
 }
 
 class _MoviesListingState extends State<MoviesListing> {
-  dynamic movies;
+  List<MovieModel>? movies = <MovieModel>[];
 
   fetchMovies() async {
     var data = await MoviesProvider.getJson();
 
-    //Updating data and requesting to rebuild widget
     setState(() {
-      //storing movie list in `movies` variable
-      movies = data['results'];
+      List<dynamic> results = data['results'];
+      // results.forEach((element) - Avoid using `forEach` with a function literal.
+      for (var element in results) {
+        movies?.add(MovieModel.fromJson(element));
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
-    //Request to fetch movies
     fetchMovies();
 
     return Scaffold(
-      //Rendering movies in ListView
       body: ListView.builder(
-        // Calculating number of items using `movies` variable
-        itemCount: movies == null ? 0 : movies.length,
-        // Passing widget handle as `context`, and `index` to process one item at a time
+        itemCount: movies == null ? 0 : movies?.length,
         itemBuilder: (context, index) {
-
           return Padding(
-            //Adding padding around the list row
             padding: const EdgeInsets.all(8.0),
 
-            //Displaying title of the movie only for now
-            child: Text(movies[index]["title"]),
+            //NEW CODE: New way to display title
+            //Title is being accessed as below rather than using`movies[index]["title"]`
+            child: Text(movies![index].title),
           );
         },
       ),
-      //ENDS
     );
   }
+}
+
+//JSON response is converted into MovieModel object
+class MovieModel {
+  final int id;
+  final num popularity;
+  final int voteCount;
+  final bool video;
+  final String posterPath;
+  final String backdropPath;
+  final bool adult;
+  final String originalLanguage;
+  final String originalTitle;
+  final List<dynamic> genreIds;
+  final String title;
+  final num voteAverage;
+  final String overview;
+  final String releaseDate;
+
+  MovieModel.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        popularity = json['popularity'],
+        voteCount = json['vote_count'],
+        video = json['video'],
+        posterPath = json['poster_path'],
+        adult = json['adult'],
+        originalLanguage = json['original_language'],
+        originalTitle = json['original_title'],
+        genreIds = json['genre_ids'],
+        title = json['title'],
+        voteAverage = json['vote_average'],
+        overview = json['overview'],
+        releaseDate = json['release_date'],
+        backdropPath = json['backdrop_path'];
 }
