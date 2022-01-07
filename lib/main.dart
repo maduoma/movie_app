@@ -78,7 +78,7 @@ class _MoviesListingState extends State<MoviesListing> {
     return Scaffold(
       //AppBar
       appBar: AppBar(
-        title: const Text("Movies"),
+        title: const Text("Movies: Fetching Data from TMDB REST API"),
         //Adding background color to AppBar
         backgroundColor: Colors.purple,
         //backgroundColor: Colors.white,
