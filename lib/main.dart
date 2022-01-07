@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 void main() => runApp(const MoviesApp());
 
 //REPLACE: Replace YOUR_API_KEY with your API key
-const apiKey = "8eaf8205d69cf7f36ddd79ceba2ff248";
+const apiKey = "YOUR_API_KEY";
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({Key? key}) : super(key: key);
