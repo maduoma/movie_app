@@ -2,6 +2,8 @@
 
 MovieApp - Fetching Data from REST API
 
+![App Screenshot](https://github.com/maduoma/movie_app/blob/master/MoviesApp.png)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
