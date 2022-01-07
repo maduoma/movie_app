@@ -78,6 +78,7 @@ class _MoviesListingState extends State<MoviesListing> {
     return Scaffold(
       //AppBar
       appBar: AppBar(
+        title: const Text("Movies"),
         //Adding background color to AppBar
         backgroundColor: Colors.purple,
         //backgroundColor: Colors.white,
